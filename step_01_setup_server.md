@@ -4,7 +4,7 @@ I bought a RS 2000 G9.5 a1 "Root"-Server which is a virtual machine with 6 dedic
 
 The server was available wthin short time. I first reinstalled Debian 11 on it, using the "one large partition" scheme.
 
-I also changed the reverse DNS name for the server IP to my MTA hostname `mail.mydomain.com` which is important later for delivering emails. And added an A-record fpor the MTA hostname. It is important that the MTS reverse and forward DNS lookups matches.
+I also changed the reverse DNS name for the server IP to my MTA hostname `mail.wyraz.net` which is important later for delivering emails. And added an A-record for the MTA hostname. It is important that the MTA reverse and forward DNS lookups matches.
 
 
 ## Setting up the OS
@@ -13,7 +13,7 @@ For the following steps I usually use ansible. I will do the setup here manually
 
 ### Set the hostname
 
-`hostnamectl set-hostname MYHOSTNAME`
+`hostnamectl set-hostname mail.wyraz.net`
 
 ### Install pdns-recursor to be independent of the hosting provider's DNS servers.
 
@@ -23,8 +23,8 @@ apt -y install pdns-recursor
 
 Edit `/etc/powerdns/recursor.conf` and enable/change the following lines:
 ```
-# xxx.yyy.zzz.aaa - the IP of the server
-allow-from=127.0.0.0/8, 10.0.0.0/8, 100.64.0.0/10, 169.254.0.0/16, 192.168.0.0/16, 172.16.0.0/12, ::1/128, fc00::/7, fe80::/10, xxx.yyy.zzz.aaa/0
+# 46.38.234.247 - the IP of your server
+allow-from=127.0.0.0/8, 10.0.0.0/8, 100.64.0.0/10, 169.254.0.0/16, 192.168.0.0/16, 172.16.0.0/12, ::1/128, fc00::/7, fe80::/10, 46.38.234.247/0
 dnssec=validate
 local-address=0.0.0.0
 ```
@@ -124,10 +124,10 @@ touch /data/k3s/config.yaml
 ln -s /data/k3s/config.yaml /etc/rancher/k3s/config.yaml
 ```
 
-Create a resolv.conf file for coredns at `/data/k3s/resolv.conf` where `xxx.yyy.zzz.aaa` is the IP of your server. Don't use 127.0.0.1 since this would cause a loop in coredns.
+Create a resolv.conf file for coredns at `/data/k3s/resolv.conf` where `46.38.234.247` is the IP of your server. Don't use 127.0.0.1 since this would cause a loop in coredns.
 
 ```
-nameserver xxx.yyy.zzz.aaa
+nameserver 46.38.234.247
 ```
 
 Configure k3s by editing `/etc/rancher/k3s/config.yaml`:
@@ -141,7 +141,7 @@ disable:
   - traefik
 resolv-conf: /data/k3s/resolv.conf
 tls-san:
-  - "mail.mydomain.com"
+  - "mail.wyraz.net"
 ```
 
 Now you can start k3s and follow it's logs until it's fully initialized:

@@ -1,0 +1,20 @@
+{{- range .Values.issuers }}
+---
+apiVersion: cert-manager.io/v1
+kind: {{ .type | default "ClusterIssuer" }}
+metadata:
+  name: {{ .name | required "issuers.name" }}
+  labels:
+    {{- include "cert-manager-issuer.labels" $ | nindent 4 }}
+spec:
+  acme:
+    server: {{ default "https://acme-v02.api.letsencrypt.org/directory" .server }}
+    email: {{ .email | required "issuers.email is required" }}
+    privateKeySecretRef:
+      name: {{ include "cert-manager-issuer.fullname" $ }}-{{ .name | required "issuers.name is required" }}
+    solvers: 
+      # Enable the HTTP-01 challenge provider
+      - http01: 
+          ingress: {}
+{{- end }}
+

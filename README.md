@@ -2,10 +2,10 @@
 
 This is my complete mailu setup at netcup, explained step-by-step.
 
-Step 1: [Setup of the server](step_01_setup_server.md)
+Step 1: [Server and K3S (kubernetes) setup](step_01_setup_server.md)
 
-Step 2: Setup of K3S as kubernetes variant
+Step 2: [Deploy some infrastructure to the cluster](step_02_deploy_infrastructure.md)
 
 Step 3: Setup of Mailu on top of K3S
 
-Step 4:  Configuring the MTA
+Step 4: Configuring the MTA

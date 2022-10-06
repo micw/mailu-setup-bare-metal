@@ -1,0 +1,138 @@
+context: mail.wyraz.net
+
+charts:
+
+  - name: prometheus-crds
+    namespace: infrastructure
+    chart:
+      repo: https://prometheus-community.github.io/helm-charts
+      name: kube-prometheus-stack
+      version: 40.4.0
+    values:
+      defaultRules:
+        create: false
+      global:
+        rbac:
+          create: false
+      alertmanager:
+        enabled: false
+      grafana:
+        enabled: false
+      kubeApiServer:
+        enabled: false
+      kubelet:
+        enabled: false
+      kubeControllerManager:
+        enabled: false
+      coreDns:
+        enabled: false
+      kubeDns:
+        enabled: false
+      kubeEtcd:
+        enabled: false
+      kubeScheduler:
+        enabled: false
+      serviceMonitor:
+        enabled: false
+      kubeProxy:
+        enabled: false
+      kubeStateMetrics:
+        enabled: false
+      nodeExporter:
+        enabled: false
+      prometheusOperator:
+        enabled: false
+      prometheus:
+        enabled: false
+
+  - name: victoria-metrics-k8s-stack
+    namespace: infrastructure
+    chart:
+      repo: https://victoriametrics.github.io/helm-charts/
+      name: victoria-metrics-k8s-stack
+      version: 0.12.2
+    values:
+      grafana:
+        enabled: false
+      vmsingle:
+        spec:
+          retentionPeriod: '2'
+
+  - name: nginx-ingress
+    namespace: infrastructure
+    chart:
+      repo: https://kubernetes.github.io/ingress-nginx
+      name: ingress-nginx
+      version: 4.3.0 # https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx
+    values:
+      controller:
+        watchIngressWithoutClass: true
+        hostPort:
+          enabled: false
+        ingressClassResource:
+          default: true
+        service:
+          enabled: true
+#        updateStrategy:
+#          type: Recreate
+        metrics:
+          enabled: true
+          serviceMonitor:
+            enabled: true
+      defaultBackend:
+        enabled: true
+
+  - name: cert-manager
+    namespace: infrastructure
+    chart:
+      repo: https://charts.jetstack.io
+      name: cert-manager
+      version: 1.9.1 # https://artifacthub.io/packages/helm/cert-manager/cert-manager
+    values:
+      installCRDs: true
+
+      ingressShim:
+        defaultIssuerName: "letsencrypt"
+        defaultIssuerKind: "ClusterIssuer"
+      prometheus:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+
+  - name: cert-manager-issuer
+    namespace: infrastructure
+    chart:
+      path: ../charts/cert-manager-issuer
+    values:
+      issuers:
+        - name: letsencrypt
+          email: <SECRET>XjTciBx3R1ZKaewXaNEVQ+rcW1Zd5F52WVFGNcMvxVjB
+          type: ClusterIssuer
+
+  - name: kubernetes-dashboard
+    namespace: infrastructure
+    chart:
+      repo: https://kubernetes.github.io/dashboard/
+      name: kubernetes-dashboard
+      version: 5.11.0 # https://github.com/kubernetes/dashboard/tree/master/charts/helm-chart/kubernetes-dashboard
+    values:
+      ingress:
+        enabled: true
+        annotations:
+          kubernetes.io/tls-acme: 'true'
+          nginx.ingress.kubernetes.io/rewrite-target: /$2
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            rewrite ^(/kubernetes)$ $1/ redirect;
+        paths:
+          - /kubernetes(/|$)(.*)
+        hosts:
+          - mail.wyraz.net
+        tls:
+        - secretName: mail.wyraz.net-tls
+          hosts:
+            - mail.wyraz.net
+      settings:
+        clusterName: mail.wyraz.net
+        itemsPerPage: 30
+        logsAutoRefreshTimeInterval: 5
+        resourceAutoRefreshTimeInterval: 5
