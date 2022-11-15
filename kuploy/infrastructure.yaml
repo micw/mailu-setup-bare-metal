@@ -73,8 +73,6 @@ charts:
           default: true
         service:
           enabled: true
-#        updateStrategy:
-#          type: Recreate
         metrics:
           enabled: true
           serviceMonitor:

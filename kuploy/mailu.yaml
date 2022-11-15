@@ -1,0 +1,38 @@
+context: mail.wyraz.net
+
+charts:
+
+  - name: mailu
+    namespace: mailu
+    chart:
+      # FIXME: should point to the schart repository after 1.0.0 is released
+      path: ../../mailu-helm-charts-fastlorenzo/mailu
+    values:
+
+      mailuVersion: 1.9.39
+
+      hostnames:
+        - mail.wyraz.net
+      domain: mail.wyraz.net
+
+      secretKey: <SECRET>XjTciBxJEndONfQHY+0PVprhZEZT5w9LJ2pLf+w8inXRe+Fmjg==
+
+      initialAccount:
+        enabled: true
+        username: mailadmin
+        domain: mail.wyraz.net
+        password: <SECRET>XjTciBx/TBN9ZcZGe/0JfOPIQlkE
+        mode: ifmissing
+
+      subnet: 10.42.0.0/16
+
+      logLevel: INFO
+
+      limits:
+        messageSizeLimitInMegabytes: 250
+      
+      credentialRounds: 10
+
+      ingress:
+        annotations:
+          kubernetes.io/tls-acme: 'true'
