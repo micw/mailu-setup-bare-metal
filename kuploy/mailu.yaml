@@ -38,3 +38,9 @@ charts:
       ingress:
         annotations:
           kubernetes.io/tls-acme: 'true'
+
+      front:
+        hostPort:
+          enabled: true
+        updateStrategy:
+          type: Recreate
