@@ -71,6 +71,7 @@ This is important because many mail providers nowadays will clasify non-DKIM ema
 * Send an email to an external account that supports SPF/DKIM/DMARC (e.g. a gmail account) and copy the headers to
   https://mxtoolbox.com/Public/Tools/EmailHeaders.aspx
     * TODO: mxtoolbox comlained about some errors although the headers sayed that all is fine
+TODO: check https://mecsa.jrc.ec.europa.eu/ or https://www.mail-tester.com/
 
 ### Check and clean dns blacklists
 

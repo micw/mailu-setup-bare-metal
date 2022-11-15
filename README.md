@@ -8,11 +8,9 @@ Step 2: [Deploy some infrastructure to the cluster](step_02_deploy_infrastructur
 
 Step 3: [Setup of Mailu on top of K3S](step_03_deploy_mailu.md)
 
-Step 4: Migrate data from old mailu installation
+Step 4: [Migrate data from old mailu installation](step_04_migrate_from_mailu.md)
 
 Step 5: Backup
 
 Step 6: Monitoring
-
-
 
