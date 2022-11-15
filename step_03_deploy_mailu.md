@@ -68,10 +68,7 @@ This is important because many mail providers nowadays will clasify non-DKIM ema
 * It makes sense to also add the auto discovery DNS entries
 * Go to https://mxtoolbox.com/DMARC.aspx and enter your mail domain to check the DMARC record
 * Go to https://www.mail-tester.com/spf-dkim-check and enter your mail domain to check the SPF and DKIM record (use dkim as selector)
-* Send an email to an external account that supports SPF/DKIM/DMARC (e.g. a gmail account) and copy the headers to
-  https://mxtoolbox.com/Public/Tools/EmailHeaders.aspx
-    * TODO: mxtoolbox comlained about some errors although the headers sayed that all is fine
-TODO: check https://mecsa.jrc.ec.europa.eu/ or https://www.mail-tester.com/
+* Open https://www.mail-tester.com/ and send an email to the generated email address shown at the page. Check the results.
 
 ### Check and clean dns blacklists
 
