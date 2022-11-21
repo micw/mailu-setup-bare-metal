@@ -15,6 +15,16 @@ For the following steps I usually use ansible. I will do the setup here manually
 
 `hostnamectl set-hostname mail.wyraz.net`
 
+### Setup Swap (if not already done while partitioning)
+
+```
+dd if=/dev/zero of=/swapfile bs=1G count=8
+chmod 0600 /swapfile
+mkswap /swapfile
+swapon /swapfile
+echo "/swapfile none swap sw 0 0" >> /etc/fstab
+```
+
 ### Install pdns-recursor to be independent of the hosting provider's DNS servers.
 
 ```
